@@ -68,13 +68,12 @@ function renderConnect(root, ctx) {
       try { await ctx.connect(conn); saveConnection(conn); connectError = null; toast('Using local test data.'); }
       catch (err) { showError(explainError(err, conn.owner, conn.repo) + ' Is the dev server running?'); }
     } }, 'Use local test data'),
-    h('p', { class: 'hint', style: 'margin-top:8px;font-size:13px;color:var(--muted)' }, 'A copy of the data starter, served by the dev server. Nothing real changes.'),
+    h('p', { class: 'hint', style: 'margin-top:8px' }, 'A copy of the data starter, served by the dev server. Nothing real changes.'),
   ] : [];
 
-  root.append(h('div', { class: 'connect' },
-    h('div', { class: 'page-head' }, h('div', { class: 'grow' },
-      h('h1', {}, 'Connect your data'),
-      h('p', { class: 'subline' }, 'Ideas, references, the plan and the platform guidelines live in your private GitHub repository. This app only shows and edits them.'))),
+  ctx.band(h('h1', { class: 'chalk-title' }, 'Connect your data'),
+    h('p', { class: 'band-line' }, 'The plan, ideas, references and guides live in your private GitHub repository. This app only shows and edits them.'));
+  root.append(h('div', { class: 'narrow' },
     status, form, help, ...local,
   ));
 }
@@ -82,9 +81,9 @@ function renderConnect(root, ctx) {
 function renderSettings(root, ctx) {
   const s = ctx.store;
   const writable = s.canWrite;
-  root.append(
-    h('div', { class: 'page-head' }, h('div', { class: 'grow' }, h('h1', {}, 'Settings'))),
-    h('h2', { class: 'section' }, 'Data'),
+  ctx.band(h('h1', { class: 'chalk-title' }, 'Settings'), h('p', { class: 'chalk-sub' }, s.label));
+  root.append(h('div', { class: 'narrow' },
+    h('h2', { class: 'section-title', style: 'margin-top:0' }, 'Data'),
     h('div', { class: 'panel' },
       h('dl', { class: 'kv', style: 'margin:0;padding:14px 16px' },
         h('dt', {}, 'Repository'), h('dd', {}, s.label),
@@ -107,11 +106,11 @@ function renderSettings(root, ctx) {
         location.reload();
       } }, 'Disconnect this device'),
     ),
-    h('h2', { class: 'section' }, 'Publishing'),
+    h('h2', { class: 'section-title' }, 'Publishing'),
     h('div', { class: 'notice' }, icon('info'), h('div', {},
       h('p', { style: 'margin:0 0 6px' }, h('strong', {}, 'The hub never publishes or schedules anything.')),
       h('p', { style: 'margin:0' }, 'Statuses here are records. The go-ahead to publish is always your message to the agent in chat, for example "approve week 48".'))),
-    h('h2', { class: 'section' }, 'On your phone'),
+    h('h2', { class: 'section-title' }, 'On your phone'),
     h('p', { style: 'margin:0;font-size:14px' }, 'Add the hub to your home screen (in Chrome: menu, then "Add to home screen"). On Android you can then share a reel straight to the hub from Instagram or TikTok\'s share menu.'),
-  );
+  ));
 }

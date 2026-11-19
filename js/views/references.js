@@ -16,13 +16,12 @@ export async function render(root, ctx, route) {
   const all = await ctx.store.list('references');
   const shared = route.params.share ? consumeShare() : null;
 
-  const head = h('div', { class: 'page-head' },
-    h('div', { class: 'grow' },
-      h('h1', {}, 'References'),
-      h('p', { class: 'subline num', id: 'ref-count' })),
-    ctx.store.canWrite ? h('button', { class: 'btn primary', type: 'button', onclick: () => openAdd(ctx) }, icon('plus'), 'Add') : null);
+  const count = h('p', { class: 'chalk-sub num' });
+  ctx.band(h('div', { class: 'band-row' },
+    h('div', { class: 'grow' }, h('h1', { class: 'chalk-title' }, 'References'), count),
+    ctx.store.canWrite ? h('button', { class: 'band-btn', type: 'button', 'aria-label': 'Add a reference', onclick: () => openAdd(ctx) }, icon('plus')) : null));
 
-  const search = h('input', { type: 'search', placeholder: 'Search notes and tags', value: state.q, 'aria-label': 'Search references' });
+  const search = h('input', { type: 'search', placeholder: 'Search', value: state.q, 'aria-label': 'Search notes and tags' });
   const seriesSel = select([{ id: '', name: 'All series' }, ...ctx.series.map((s) => ({ id: s.id, name: s.name })), { id: '-', name: 'No series' }], state.series, { 'aria-label': 'Series' });
   const chips = h('div', { class: 'chips scroll', role: 'group', 'aria-label': 'Platform' });
   const board = h('div', { class: 'board' });
@@ -40,12 +39,11 @@ export async function render(root, ctx, route) {
       .map((p) => h('button', { class: 'chip', type: 'button', 'aria-pressed': state.platform === p.id ? 'true' : 'false',
         onclick: () => { state.platform = p.id; draw(); } }, p.name, h('span', { class: 'count num' }, p.n))));
 
-    const count = root.querySelector('#ref-count') || head.querySelector('#ref-count');
     count.textContent = list.length === all.length ? `${all.length} saved` : `${list.length} of ${all.length} shown`;
 
     if (!all.length) {
       board.replaceChildren(h('div', { class: 'empty', style: 'grid-column:1/-1' },
-        h('strong', {}, 'Nothing saved yet. '), 'Add a reel or TikTok link, a picture, or a video you would like our posts to look like, and say what you like about it.'));
+        h('strong', {}, 'Nothing pinned yet.'), 'Share a reel or TikTok to the hub, or tap + to add a link, a picture or a video, and say what you like about it.'));
       return;
     }
     if (!list.length) {
@@ -59,8 +57,8 @@ export async function render(root, ctx, route) {
   search.addEventListener('input', () => { state.q = search.value; draw(); });
   seriesSel.addEventListener('change', () => { state.series = seriesSel.value; draw(); });
 
-  root.append(head,
-    h('div', { class: 'board-tools' }, chips, h('div', { class: 'row2' }, seriesSel, search)),
+  root.append(
+    h('div', { class: 'tools' }, chips, h('div', { class: 'row2' }, seriesSel, search)),
     board);
   draw();
 
@@ -81,8 +79,8 @@ function lazyImage(ctx, path, alt) {
 function tileFor(r) {
   const info = r.url ? parseLink(r.url) : null;
   const name = info ? info.name : r.driveUrl ? 'Video in Google Drive' : 'Reference';
-  return h('div', { class: `tile${r.kind === 'video' ? ' ox' : ''}` },
-    h('span', { class: 'tile-platform' }, platformName(r.platform)),
+  return h('div', { class: 'tile' },
+    h('span', { class: 'tile-code' }, r.platform === 'any' ? (r.kind === 'video' ? 'Video' : 'Link') : platformName(r.platform)),
     h('span', { class: 'tile-name' }, name));
 }
 
@@ -98,11 +96,11 @@ const KIND = { link: ['link', 'Link'], image: ['image', 'Picture'], video: ['vid
 function refCard(ctx, r) {
   const [ic, label] = KIND[r.kind] || KIND.link;
   const meta = [ctx.seriesName(r.series), ...(r.tags || []).slice(0, 3).map((t) => '#' + t)].filter(Boolean);
-  return h('button', { class: 'ref panel', type: 'button', onclick: () => openDetail(ctx, r) },
-    h('div', { class: 'ref-media' }, mediaFor(ctx, r), h('span', { class: 'ref-kind' }, icon(ic), label)),
+  return h('button', { class: 'ref pin', type: 'button', onclick: () => openDetail(ctx, r) },
+    h('div', { class: 'ref-media' }, mediaFor(ctx, r)),
     h('div', { class: 'ref-body' },
       h('div', { class: `ref-like${r.like ? '' : ' none'}` }, r.like || 'No note yet'),
-      h('div', { class: 'ref-meta' }, platformName(r.platform), meta.length ? ' · ' + meta.join(' · ') : '')));
+      h('div', { class: 'ref-meta' }, icon(ic), h('span', {}, [label, platformName(r.platform), ...meta].filter(Boolean).join(', ')))));
 }
 
 // ---------- detail ----------
@@ -129,8 +127,8 @@ function openDetail(ctx, r) {
     h('p', { style: 'margin:12px 0 0;font-size:16px;white-space:pre-wrap' }, r.like || h('span', { style: 'color:var(--muted)' }, 'No note on what you like about it yet.')),
     h('dl', { class: 'kv' },
       h('dt', {}, 'Platform'), h('dd', {}, platformName(r.platform)),
-      h('dt', {}, 'Series'), h('dd', {}, ctx.seriesName(r.series) || '—'),
-      h('dt', {}, 'Tags'), h('dd', {}, (r.tags || []).length ? r.tags.join(', ') : '—'),
+      h('dt', {}, 'Series'), h('dd', {}, ctx.seriesName(r.series) || 'None'),
+      h('dt', {}, 'Tags'), h('dd', {}, (r.tags || []).length ? r.tags.join(', ') : 'None'),
       h('dt', {}, 'Added'), h('dd', {}, relDate(r.createdAt)),
       r.url ? [h('dt', {}, 'Link'), h('dd', { style: 'font-size:13px;color:var(--muted)' }, r.url)] : null,
     ),
@@ -155,7 +153,7 @@ function openDetail(ctx, r) {
 }
 
 // ---------- add / edit ----------
-function openAdd(ctx, { text, existing } = {}) {
+export function openAdd(ctx, { text, existing } = {}) {
   const r = existing ? { ...existing } : null;
   let kind = r ? r.kind : 'link';
   let picture = null;      // { blob, width, height } after compression

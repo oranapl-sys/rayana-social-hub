@@ -1,7 +1,7 @@
 // Network first, so a new version of the app is always picked up.
 // The app shell is cached only so the hub still opens with a weak signal at a market.
 // Calls to GitHub (data and pictures) are never cached here.
-const SHELL = 'rsh-shell-v1';
+const SHELL = 'rsh-shell-v2';
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k.startsWith('rsh-shell-') && k !== SHELL).map((k) => caches.delete(k)))).then(() => self.clients.claim()));

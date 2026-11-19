@@ -21,31 +21,52 @@ function append(el, children) {
   }
 }
 
-const P = {
-  week: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/>',
-  idea: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',
-  refs: '<rect x="3.5" y="3.5" width="7" height="9" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="5.5" rx="1.5"/><rect x="13.5" y="12" width="7" height="8.5" rx="1.5"/><rect x="3.5" y="15.5" width="7" height="5" rx="1.5"/>',
-  platforms: '<path d="M12 3.5l8.5 4.5-8.5 4.5L3.5 8z"/><path d="M3.5 12l8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5"/>',
-  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
-  plus: '<path d="M12 5v14M5 12h14"/>',
-  close: '<path d="M6 6l12 12M18 6L6 18"/>',
-  link: '<path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/>',
-  image: '<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M20.5 16l-5-5-8.5 8.5"/>',
-  video: '<rect x="3.5" y="6" width="12" height="12" rx="2"/><path d="M15.5 10.5l5-3v9l-5-3"/>',
-  left: '<path d="M15 5l-7 7 7 7"/>',
-  right: '<path d="M9 5l7 7-7 7"/>',
-  external: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V7.5A1.5 1.5 0 0 1 5.5 6H10"/>',
-  edit: '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
-  info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
-  search: '<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',
-  drive: '<path d="M8.5 4h7l5.5 9.5-3.5 6h-11L3 13.5z"/><path d="M8.5 4l5.5 9.5H21M3 13.5h11l-3.5 6"/>',
-  refresh: '<path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"/>',
-  play: '<path d="M7 4.5v15l12-7.5z"/>',
+// Icons come from Phosphor (regular weight), loaded in index.html.
+const ICONS = {
+  week: 'calendar-blank', pipeline: 'kanban', feed: 'grid-nine', refs: 'bookmark-simple', guides: 'book-open-text',
+  settings: 'gear-six', plus: 'plus', close: 'x', link: 'link-simple', image: 'image', video: 'video-camera',
+  left: 'caret-left', right: 'caret-right', external: 'arrow-square-out', edit: 'pencil-simple', info: 'info',
+  search: 'magnifying-glass', drive: 'google-drive-logo', refresh: 'arrows-clockwise', play: 'play', copy: 'copy',
+  next: 'arrow-right', idea: 'lightbulb', market: 'storefront', story: 'camera', post: 'clipboard-text',
 };
 export function icon(name, cls = '') {
-  const span = document.createElement('span');
-  span.innerHTML = `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[name] || ''}</svg>`;
-  return span.firstChild;
+  const i = document.createElement('i');
+  i.className = `ph ph-${ICONS[name] || name}${cls ? ' ' + cls : ''}`;
+  i.setAttribute('aria-hidden', 'true');
+  return i;
+}
+
+/** A status printed as a mark in a fixed cell: the circle fills as the post moves along. */
+const FILL = { planned: 0, scripted: 0.25, filmed: 0.5, 'rough-cut': 0.75, ready: 1, 'approved-in-chat': 1, posted: 1 };
+export function mark(status, { label } = {}) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 16 16');
+  svg.setAttribute('class', `mk ${status === 'ready' ? 'ready' : status === 'open' ? 'open' : status === 'dropped' ? 'dropped' : ''}`);
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', label || statusName(status));
+  const ring = document.createElementNS(ns, 'circle');
+  ring.setAttribute('cx', '8'); ring.setAttribute('cy', '8'); ring.setAttribute('r', '6.6'); ring.setAttribute('class', 'ring');
+  svg.append(ring);
+  const f = FILL[status] ?? 0;
+  if (f >= 1) {
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', '8'); c.setAttribute('cy', '8'); c.setAttribute('r', '4.4'); c.setAttribute('class', 'fill');
+    svg.append(c);
+  } else if (f > 0) {
+    const a = f * 2 * Math.PI, r = 4.4;
+    const x = 8 + r * Math.sin(a), y = 8 - r * Math.cos(a);
+    const path = document.createElementNS(ns, 'path');
+    path.setAttribute('d', `M8 8 L8 ${8 - r} A${r} ${r} 0 ${f > 0.5 ? 1 : 0} 1 ${x.toFixed(2)} ${y.toFixed(2)} Z`);
+    path.setAttribute('class', 'fill');
+    svg.append(path);
+  }
+  if (status === 'dropped') {
+    const l = document.createElementNS(ns, 'path');
+    l.setAttribute('d', 'M2.5 13.5 L13.5 2.5'); l.setAttribute('class', 'ring');
+    svg.append(l);
+  }
+  return svg;
 }
 
 // ---- vocabulary ----
@@ -72,9 +93,34 @@ export const IDEA_STATUSES = [
   { id: 'planned', name: 'Planned' },
   { id: 'dropped', name: 'Dropped' },
 ];
-export function statusPill(id, list = POST_STATUSES) {
-  const s = list.find((x) => x.id === id) || list[0];
-  return h('span', { class: `pill ${s.cls || ''}` }, s.name);
+export function statusName(id, list = POST_STATUSES) {
+  return (list.find((x) => x.id === id) || { name: id === 'open' ? 'Open slot' : id === 'dropped' ? 'Dropped' : list[0].name }).name;
+}
+
+// ---- series codes and post codes (quotable in chat: "approve 48-MON-IE") ----
+const CODE_FALLBACK = { 'first-sip': 'FS', 'indonesia-explained': 'IE', 'from-kamojang': 'FK', 'brew-it-better': 'BB', rankings: 'RK', 'meet-the-guardian': 'MG', 'coffee-recipes': 'CR' };
+export function seriesCode(series, id) {
+  if (!id) return 'XX';
+  const s = series.find((x) => x.id === id);
+  if (s && s.code) return s.code;
+  if (CODE_FALLBACK[id]) return CODE_FALLBACK[id];
+  return (s ? s.name : id).split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase() || 'XX';
+}
+export function isoWeek(iso) {
+  const d = parseISO(iso);
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return Math.ceil(((t - y0) / 86400000 + 1) / 7);
+}
+export function postCode(post, series) {
+  if (!post || !post.date) return '';
+  return `${isoWeek(post.date)}-${DOW[parseISO(post.date).getDay()].toUpperCase()}-${seriesCode(series, post.series)}`;
+}
+export async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); toast(`Copied ${text}. Paste it in chat to talk about this post.`); }
+  catch { toast(`The code is ${text}.`); }
 }
 
 /** Works out the platform, a readable name and (for YouTube) a thumbnail from a pasted link. */

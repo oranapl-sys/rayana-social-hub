@@ -2,58 +2,53 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#F1E8D8">
-  <meta name="color-scheme" content="light">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EDE3CF">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101E18">
+  <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="description" content="Rayana Coffees' social media plan: this week, the pipeline, the feed, references and platform guides.">
   <title>Rayana Social Hub</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+  <a class="skip" href="#view">Skip to content</a>
   <div class="layout">
-    <header class="topbar">
-      <a class="brand" href="#/week" aria-label="Rayana Social Hub, this week">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-          <circle cx="16" cy="16" r="15" fill="#1F3B31"/>
-          <circle cx="16" cy="16" r="12.5" fill="none" stroke="#C0A06A" stroke-width="0.8"/>
-          <text x="16" y="21.2" text-anchor="middle" font-family="Libre Baskerville, Georgia, serif" font-size="15" fill="#F1E8D8">R</text>
-        </svg>
-        <span class="brand-name">Rayana<span>Social Hub</span></span>
+    <nav class="rail" id="rail" aria-label="Main" hidden>
+      <a class="wordmark" href="#/week" aria-label="Rayana Social Hub, this week">
+        <span class="wm-name">Rayana</span><span class="wm-sub">Social Hub</span>
       </a>
-      <span class="spacer"></span>
-      <span class="sync" id="sync" role="status" aria-live="polite" hidden><span class="dot"></span><span class="txt"></span></span>
-      <a class="icon-btn" href="#/settings" id="settings-link" aria-label="Settings">
-        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-      </a>
-    </header>
-    <nav class="tabbar" id="tabbar" aria-label="Main" hidden>
-      <a class="tab" href="#/week" data-route="week">
-        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></svg>
-        <span>This week</span>
-      </a>
-      <a class="tab" href="#/ideas" data-route="ideas">
-        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>
-        <span>Ideas</span>
-      </a>
-      <a class="tab" href="#/references" data-route="references">
-        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="9" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="5.5" rx="1.5"/><rect x="13.5" y="12" width="7" height="8.5" rx="1.5"/><rect x="3.5" y="15.5" width="7" height="5" rx="1.5"/></svg>
-        <span>References</span>
-      </a>
-      <a class="tab" href="#/platforms" data-route="platforms">
-        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l8.5 4.5-8.5 4.5L3.5 8z"/><path d="M3.5 12l8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5"/></svg>
-        <span>Platforms</span>
-      </a>
+      <div class="tabs">
+        <a class="tab" href="#/week" data-route="week"><i class="ph ph-calendar-blank" aria-hidden="true"></i><span>Week</span></a>
+        <a class="tab" href="#/pipeline" data-route="pipeline"><i class="ph ph-kanban" aria-hidden="true"></i><span>Pipeline</span></a>
+        <a class="tab" href="#/feed" data-route="feed"><i class="ph ph-grid-nine" aria-hidden="true"></i><span>Feed</span></a>
+        <a class="tab" href="#/references" data-route="references"><i class="ph ph-bookmark-simple" aria-hidden="true"></i><span>References</span></a>
+        <a class="tab" href="#/guides" data-route="guides"><i class="ph ph-book-open-text" aria-hidden="true"></i><span>Guides</span></a>
+      </div>
+      <button class="add-btn" id="add-btn" type="button" aria-label="Add a reference, idea or post" hidden><i class="ph ph-plus" aria-hidden="true"></i><span>Add</span></button>
     </nav>
-    <main id="view" tabindex="-1">
-      <p class="subline">Loading…</p>
-    </main>
+    <div class="col">
+      <header class="band" id="band">
+        <div class="mast">
+          <a class="mast-name" href="#/week">Rayana <span>Social Hub</span></a>
+          <span class="sync" id="sync" role="status" aria-live="polite" hidden><span class="txt"></span></span>
+          <a class="band-btn" href="#/settings" id="settings-link" aria-label="Settings" hidden><i class="ph ph-gear-six" aria-hidden="true"></i></a>
+        </div>
+        <div class="band-body" id="band-body"></div>
+      </header>
+      <main id="view" tabindex="-1">
+        <div class="skel-list" aria-hidden="true"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+      </main>
+    </div>
   </div>
   <noscript><p style="padding:16px">The hub needs JavaScript turned on.</p></noscript>
   <script type="module" src="js/app.js"></script>

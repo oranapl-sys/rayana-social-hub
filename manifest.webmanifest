@@ -1,12 +1,12 @@
 {
   "name": "Rayana Social Hub",
   "short_name": "Rayana Hub",
-  "description": "Plan, ideas, references and platform guidelines for Rayana Coffees' social media.",
+  "description": "This week, the pipeline, the feed, references and platform guides for Rayana Coffees' social media.",
   "start_url": "./#/week",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F1E8D8",
-  "theme_color": "#F1E8D8",
+  "background_color": "#EDE3CF",
+  "theme_color": "#EDE3CF",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },

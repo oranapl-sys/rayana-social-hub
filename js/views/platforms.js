@@ -1,14 +1,14 @@
-// Platforms: each platform's guidelines, from platforms/<id>.md in the data repo.
+// Guides: each platform's guidelines, from platforms/<id>.md in the data repo.
 import { h, icon, toast, openSheet, PLATFORMS, platformName } from '../ui.js';
 import { renderMarkdown } from '../md.js';
 
 
 export async function render(root, ctx, route) {
   const id = PLATFORMS.some((p) => p.id === route.parts[0]) ? route.parts[0] : 'instagram';
-  if (!route.parts[0]) history.replaceState(null, '', `#/platforms/${id}`);
+  if (!route.parts[0]) history.replaceState(null, '', `#/guides/${id}`);
 
-  const tabs = h('div', { class: 'chips scroll platform-tabs', role: 'tablist', 'aria-label': 'Platform' },
-    PLATFORMS.map((p) => h('a', { class: 'chip', role: 'tab', href: `#/platforms/${p.id}`, 'aria-selected': p.id === id ? 'true' : 'false' }, p.name)));
+  const tabs = h('div', { class: 'band-tabs', role: 'tablist', 'aria-label': 'Platform' },
+    PLATFORMS.map((p) => h('a', { class: 'band-tab', role: 'tab', href: `#/guides/${p.id}`, 'aria-selected': p.id === id ? 'true' : 'false' }, p.name)));
 
   let doc = ctx.store.mem.get('doc:' + id);
   if (!doc) {
@@ -17,7 +17,8 @@ export async function render(root, ctx, route) {
   }
 
   if (!doc) {
-    root.append(tabs, h('div', { class: 'page-head' }, h('div', { class: 'grow' }, h('h1', {}, platformName(id)))),
+    ctx.band(h('h1', { class: 'chalk-title' }, platformName(id)), h('p', { class: 'chalk-sub' }, 'No guide yet'), tabs);
+    root.append(
       h('div', { class: 'empty' }, `No guidelines yet. Add platforms/${id}.md to the data repository`,
         ctx.store.canWrite ? [', or ', h('button', { class: 'btn small quiet', type: 'button', onclick: () => openEditor(ctx, id, { text: `# ${platformName(id)}\n\n## At a glance\n\n- **Role:** \n` }) }, 'write them here'), '.'] : '.'));
     return;
@@ -26,12 +27,14 @@ export async function render(root, ctx, route) {
   const md = renderMarkdown(doc.text);
   const refs = (await ctx.store.list('references')).filter((r) => r.platform === id);
 
-  root.append(tabs,
-    h('div', { class: 'page-head' },
+  ctx.band(
+    h('div', { class: 'band-row' },
       h('div', { class: 'grow' },
-        h('h1', {}, md.title || platformName(id)),
-        h('p', { class: 'subline' }, 'What this platform is for, what works, and the rules we post by.')),
-      ctx.store.canWrite ? h('button', { class: 'btn', type: 'button', onclick: () => openEditor(ctx, id, doc) }, icon('edit'), 'Edit') : null),
+        h('h1', { class: 'chalk-title' }, md.title || platformName(id)),
+        h('p', { class: 'chalk-sub' }, 'What it is for, what works, our rules')),
+      ctx.store.canWrite ? h('button', { class: 'band-btn', type: 'button', 'aria-label': `Edit the ${platformName(id)} guide`, onclick: () => openEditor(ctx, id, doc) }, icon('edit')) : null),
+    tabs);
+  root.append(
     md.sections.length > 2 ? h('nav', { class: 'chips scroll toc', 'aria-label': 'On this page' },
       md.sections.map((s) => h('button', { class: 'chip', type: 'button', onclick: () => {
         const el = document.getElementById(s.id);
@@ -45,19 +48,19 @@ export async function render(root, ctx, route) {
 }
 
 function refStrip(ctx, id, refs) {
-  const wrap = h('section', { class: 'doc-ref-strip' },
-    h('div', { style: 'display:flex;align-items:baseline;gap:12px' },
-      h('h2', { style: 'font:400 20px/1.3 var(--serif);margin:0;flex:1' }, `References for ${platformName(id)}`),
-      h('a', { class: 'btn small quiet', href: `#/references?platform=${id}` }, refs.length ? `See all ${refs.length}` : 'Add one')));
+  const wrap = h('section', { style: 'max-width:68ch;margin-top:36px;padding-top:14px;border-top:1px solid var(--brass)' },
+    h('div', { class: 'section-title', style: 'margin-top:0' },
+      h('h2', { class: 'grow', style: 'font:inherit' }, `References for ${platformName(id)}`),
+      h('a', { class: 'btn small', href: `#/references?platform=${id}` }, refs.length ? `See all ${refs.length}` : 'Add one')));
   if (!refs.length) {
-    wrap.append(h('p', { class: 'subline' }, `No ${platformName(id)} references yet.`));
+    wrap.append(h('p', { class: 'hint' }, `No ${platformName(id)} references yet.`));
     return wrap;
   }
   const thumbs = h('div', { class: 'thumbs' });
   for (const r of refs.slice(0, 4)) {
     const cell = h('a', { class: 'ref-media', href: `#/references?platform=${id}`, title: r.like || '' });
     if (r.image) ctx.store.mediaURL(r.image).then((u) => cell.append(h('img', { src: u, alt: r.like || '' }))).catch(() => {});
-    else cell.append(h('div', { class: 'tile' }, h('span', { class: 'tile-name', style: 'font-size:13px' }, (r.like || 'Link').slice(0, 40))));
+    else cell.append(h('div', { class: 'tile', style: 'padding:10px' }, h('span', { class: 'tile-name', style: 'font-size:12.5px' }, (r.like || 'Link').slice(0, 40))));
     thumbs.append(cell);
   }
   wrap.append(thumbs);
@@ -70,7 +73,7 @@ function openEditor(ctx, id, doc) {
   const sheet = openSheet({
     title: `Edit ${platformName(id)} guidelines`, tall: true,
     body: h('div', {},
-      h('p', { class: 'hint', style: 'margin:0 0 10px;font-size:13px;color:var(--muted)' },
+      h('p', { class: 'hint', style: 'margin:0 0 10px' },
         'Plain text with a few marks: ## for a section, - for a list, **bold**. The agent reads this file too.'),
       area),
     foot: [save],

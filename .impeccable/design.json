@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-19T12:00:00+10:00",
+  "title": "Design System: Rayana Social Hub",
+  "extensions": {
+    "colorMeta": {
+      "board-green": { "role": "primary", "displayName": "Board Green", "canonical": "#1F3B31", "tonalRamp": ["#0B1712", "#122520", "#1F3B31", "#2A4B3F", "#4A6B5E", "#7A9488", "#B4C5BC", "#E4ECE7"] },
+      "oxblood": { "role": "secondary", "displayName": "Oxblood (needs Oran)", "canonical": "#5B2024", "tonalRamp": ["#260C0E", "#3A1D20", "#5B2024", "#7A2E33", "#9E5257", "#C2878A", "#E2A9A3", "#F5E6E3"] },
+      "brass": { "role": "tertiary", "displayName": "Brass Frame", "canonical": "#C0A06A", "tonalRamp": ["#3A2E18", "#5A4826", "#806737", "#A4874F", "#C0A06A", "#D3BB91", "#E6D6BA", "#F5EEE1"] },
+      "chalk-cream": { "role": "neutral", "displayName": "Chalk Cream", "canonical": "#F1E8D8", "tonalRamp": ["#3D382F", "#6A6253", "#958B78", "#BDB29E", "#D9CFBC", "#E7DECD", "#F1E8D8", "#FAF6EE"] },
+      "chalk-warm": { "role": "neutral", "displayName": "Warm Chalk (today's special)", "canonical": "#EBD5A4" },
+      "chalk-warm-ox": { "role": "neutral", "displayName": "Warm Oxblood Chalk", "canonical": "#EDB9AC" },
+      "sack": { "role": "neutral", "displayName": "Sack Ground", "canonical": "#EDE3CF" },
+      "paper": { "role": "neutral", "displayName": "Pinned Paper", "canonical": "#F8F3EA" },
+      "paper-2": { "role": "neutral", "displayName": "Paper Shade", "canonical": "#F2EADB" },
+      "ink": { "role": "neutral", "displayName": "Green Ink", "canonical": "#1F3B31" },
+      "muted": { "role": "neutral", "displayName": "Muted Sage", "canonical": "#55645C" },
+      "danger": { "role": "neutral", "displayName": "Danger", "canonical": "#8E2A2E" },
+      "dark-sack": { "role": "neutral", "displayName": "Night Sack (dark mode)", "canonical": "#101E18" },
+      "dark-paper": { "role": "neutral", "displayName": "Night Paper (dark mode)", "canonical": "#16271F" },
+      "dark-paper-2": { "role": "neutral", "displayName": "Night Paper Shade (dark mode)", "canonical": "#1B2E25" },
+      "dark-ink": { "role": "neutral", "displayName": "Cream Ink (dark mode)", "canonical": "#ECE2CE" },
+      "dark-muted": { "role": "neutral", "displayName": "Night Sage (dark mode)", "canonical": "#A3B1A6" },
+      "dark-oxblood": { "role": "secondary", "displayName": "Oxblood Fill (dark mode)", "canonical": "#7A2E33" },
+      "dark-oxblood-text": { "role": "secondary", "displayName": "Oxblood Text (dark mode)", "canonical": "#E2A9A3" },
+      "dark-oxblood-tint": { "role": "secondary", "displayName": "Oxblood Tint (dark mode)", "canonical": "#3A1D20" }
+    },
+    "typographyMeta": {
+      "chalk-display": { "displayName": "Chalk Display", "purpose": "Board titles; 46px on desktop. Boards only." },
+      "chalk-line": { "displayName": "Chalk Line", "purpose": "Chalked day lines, board subtitles, board tabs, small-board codes." },
+      "chalk-special": { "displayName": "Chalk Special", "purpose": "Today's special, in warm chalk." },
+      "headline": { "displayName": "Serif Headline", "purpose": "Section, sheet and guide titles; week head; empty-state leads." },
+      "body": { "displayName": "Body", "purpose": "All working text." },
+      "title": { "displayName": "List Title", "purpose": "Post titles in lists; metadata is the same size at weight 500." },
+      "label": { "displayName": "Label", "purpose": "Field labels and small headings." },
+      "code": { "displayName": "Post Code", "purpose": "Week-DAY-SERIES codes in a ruled box, quotable in chat." }
+    },
+    "shadows": [
+      { "name": "board", "value": "inset 0 0 36px rgba(0,0,0,0.28), 0 6px 18px rgba(22,44,36,0.18)", "purpose": "The chalkboard's worn edge and lift off the sack." },
+      { "name": "pinned", "value": "0 2px 4px rgba(22,44,36,0.08), 0 8px 18px -10px rgba(22,44,36,0.35)", "purpose": "Pinned notes at rest." },
+      { "name": "pinned-lifted", "value": "0 4px 8px rgba(22,44,36,0.1), 0 16px 28px -12px rgba(22,44,36,0.45)", "purpose": "Pinned notes under the pointer." },
+      { "name": "float", "value": "0 10px 28px rgba(22,44,36,0.22)", "purpose": "Add button, toasts, desktop sheets. Dark mode: 0 10px 28px rgba(0,0,0,0.45)." },
+      { "name": "brass-edge", "value": "inset 0 1px 0 #C0A06A", "purpose": "Top edge of tab bar, sheets and toasts." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Presses (140-160ms) and the pin straighten (220ms)." },
+      { "name": "ease-drawer", "value": "cubic-bezier(0.32, 0.72, 0, 1)", "purpose": "Bottom sheets sliding up (300ms)." },
+      { "name": "tilt", "value": "-1.4deg, 1.1deg, -0.6deg", "purpose": "Pinned-note rotation by turn; 0deg on hover, press, focus and reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "board-3col", "value": "640px" },
+      { "name": "dialog", "value": "700px" },
+      { "name": "rail", "value": "900px" },
+      { "name": "board-4col", "value": "1180px" },
+      { "name": "pipeline-grid", "value": "1200px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Green action; the main confirm in sheets.",
+      "html": "<button class=\"ds-btn-primary\">Save</button>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 16px; border-radius:4px; border:1px solid #1F3B31; background:#1F3B31; color:#F1E8D8; font:600 14.5px 'Plus Jakarta Sans',system-ui,sans-serif; cursor:pointer; transition:transform 140ms cubic-bezier(0.23,1,0.32,1), background-color 140ms ease; } .ds-btn-primary:hover { background:#2A4B3F; } .ds-btn-primary:active { transform:scale(0.97); } .ds-btn-primary:focus-visible { outline:2px solid #C0A06A; outline-offset:2px; }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Ruled, transparent secondary action.",
+      "html": "<button class=\"ds-btn-default\">Cancel</button>",
+      "css": ".ds-btn-default { min-height:44px; padding:0 16px; border-radius:4px; border:1px solid rgba(31,59,49,0.34); background:transparent; color:#1F3B31; font:600 14.5px 'Plus Jakarta Sans',system-ui,sans-serif; cursor:pointer; transition:transform 140ms cubic-bezier(0.23,1,0.32,1), background-color 140ms ease; } .ds-btn-default:hover { background:#F2EADB; } .ds-btn-default:active { transform:scale(0.97); } .ds-btn-default:focus-visible { outline:2px solid #C0A06A; outline-offset:2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Paper field with oxblood caret and ink focus ring.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Paste a link\">",
+      "css": ".ds-input { width:100%; min-height:44px; padding:10px 12px; background:#F8F3EA; border:1px solid rgba(31,59,49,0.34); border-radius:4px; font:400 16px 'Plus Jakarta Sans',system-ui,sans-serif; color:#1F3B31; caret-color:#5B2024; } .ds-input::placeholder { color:#55645C; } .ds-input:focus { outline:none; border-color:#1F3B31; box-shadow:0 0 0 1px #1F3B31; }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Filter chip; selected fills green.",
+      "html": "<span class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">All</button><button class=\"ds-chip\" aria-pressed=\"false\">Reels</button></span>",
+      "css": ".ds-chips { display:flex; gap:6px; } .ds-chip { min-height:36px; padding:0 12px; border-radius:4px; border:1px solid rgba(31,59,49,0.34); background:transparent; color:#1F3B31; font:600 14px 'Plus Jakarta Sans',system-ui,sans-serif; cursor:pointer; transition:transform 140ms cubic-bezier(0.23,1,0.32,1); } .ds-chip[aria-pressed=\"true\"] { background:#1F3B31; border-color:#1F3B31; color:#F1E8D8; } .ds-chip:active { transform:scale(0.96); } .ds-chip:focus-visible { outline:2px solid #C0A06A; outline-offset:2px; }"
+    },
+    {
+      "name": "The Board",
+      "kind": "custom",
+      "refersTo": "board",
+      "description": "Screen head: green chalkboard in a brass frame, lettered in Cabin Sketch.",
+      "html": "<div class=\"ds-board\"><h1 class=\"ds-chalk-title\">This week</h1><ul class=\"ds-chalk-list\"><li><b>Mon</b><span>From Kamojang</span><span class=\"ds-state\">filmed</span></li><li><b>Wed</b><span>Brew it better</span><span class=\"ds-state ds-need\">ready for you</span></li></ul><div class=\"ds-special\">Today's special: check 47-WED-BB</div></div>",
+      "css": ".ds-board { border:3px solid #C0A06A; border-radius:6px; color:#F1E8D8; background:radial-gradient(120% 70% at 18% 8%, rgba(241,232,216,0.07), transparent 60%), #1F3B31; box-shadow:inset 0 0 36px rgba(0,0,0,0.28), 0 6px 18px rgba(22,44,36,0.18); padding:14px 14px 18px; } .ds-chalk-title { font:700 40px/1.02 'Cabin Sketch','Libre Baskerville',Georgia,serif; margin:0; } .ds-chalk-list { list-style:none; margin:14px 0 0; padding:0; } .ds-chalk-list li { display:grid; grid-template-columns:54px 1fr auto; gap:10px; padding:7px 0; border-bottom:1px dashed rgba(241,232,216,0.28); font:400 19px/1.2 'Cabin Sketch',Georgia,serif; } .ds-state { font-size:16px; color:rgba(241,232,216,0.74); } .ds-need { color:#EDB9AC; } .ds-special { margin-top:12px; font:700 21px/1.2 'Cabin Sketch',Georgia,serif; color:#EBD5A4; }"
+    },
+    {
+      "name": "Pinned Note",
+      "kind": "card",
+      "refersTo": "note",
+      "description": "A post as a paper note, tilted, straightening under the hand; this is the needs-Oran variant.",
+      "html": "<button class=\"ds-note\"><span class=\"ds-top\"><svg class=\"ds-mk\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><circle cx=\"8\" cy=\"8\" r=\"4.4\" fill=\"currentColor\"/></svg><span class=\"ds-code\">47-WED-BB</span></span><b>Pour-over at the stall</b><span class=\"ds-meta\">Ready for you</span></button>",
+      "css": ".ds-note { display:grid; gap:4px; text-align:left; width:260px; cursor:pointer; color:#1F3B31; background:color-mix(in srgb, #EAD6D0 45%, #F8F3EA); border:1px solid color-mix(in srgb, #5B2024 40%, transparent); border-radius:6px; padding:12px 14px; font:700 14px/1.35 'Plus Jakarta Sans',system-ui,sans-serif; transform:rotate(-1.4deg); transform-origin:50% 0; box-shadow:0 2px 4px rgba(22,44,36,0.08), 0 8px 18px -10px rgba(22,44,36,0.35); transition:transform 220ms cubic-bezier(0.23,1,0.32,1), box-shadow 220ms cubic-bezier(0.23,1,0.32,1); } .ds-note:hover { transform:rotate(0deg) translateY(-3px); box-shadow:0 4px 8px rgba(22,44,36,0.1), 0 16px 28px -12px rgba(22,44,36,0.45); } .ds-note:active { transform:rotate(0deg) scale(0.985); } .ds-note:focus-visible { transform:rotate(0deg); outline:2px solid #C0A06A; outline-offset:2px; } .ds-top { display:flex; align-items:center; gap:10px; } .ds-mk { width:16px; height:16px; color:#5B2024; } .ds-code { font:700 12px/1 'Plus Jakarta Sans',sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-variant-numeric:tabular-nums; color:#55645C; border:1px solid rgba(31,59,49,0.34); border-radius:4px; padding:5px 7px; } .ds-meta { font-weight:700; color:#5B2024; }"
+    },
+    {
+      "name": "Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-bar",
+      "description": "Green bottom tab bar with brass top line and brass active bar.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab\" aria-current=\"page\" href=\"#\">Week</a><a class=\"ds-tab\" href=\"#\">Pipeline</a><a class=\"ds-tab\" href=\"#\">Feed</a><a class=\"ds-tab\" href=\"#\">References</a><a class=\"ds-tab\" href=\"#\">Guides</a></nav>",
+      "css": ".ds-tabs { display:grid; grid-template-columns:repeat(5,1fr); height:64px; background:#1F3B31; box-shadow:inset 0 1px 0 #C0A06A; } .ds-tab { position:relative; display:flex; align-items:center; justify-content:center; text-decoration:none; color:rgba(241,232,216,0.74); font:600 11.5px 'Plus Jakarta Sans',system-ui,sans-serif; } .ds-tab:hover { color:#F1E8D8; } .ds-tab[aria-current=\"page\"] { color:#F1E8D8; } .ds-tab[aria-current=\"page\"]::before { content:\"\"; position:absolute; top:0; left:28%; right:28%; height:2px; background:#C0A06A; } .ds-tab:focus-visible { outline:2px solid #C0A06A; outline-offset:-2px; }"
+    },
+    {
+      "name": "Add Button",
+      "kind": "button",
+      "refersTo": "add-button",
+      "description": "The oxblood round add button; the only round shape.",
+      "html": "<button class=\"ds-add\" aria-label=\"Add\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M224 128a8 8 0 0 1-8 8h-80v80a8 8 0 0 1-16 0v-80H40a8 8 0 0 1 0-16h80V40a8 8 0 0 1 16 0v80h80a8 8 0 0 1 8 8Z\"/></svg></button>",
+      "css": ".ds-add { width:58px; height:58px; border-radius:50%; border:0; cursor:pointer; background:#5B2024; color:#F1E8D8; box-shadow:0 10px 28px rgba(22,44,36,0.22); display:grid; place-items:center; transition:transform 160ms cubic-bezier(0.23,1,0.32,1); } .ds-add:active { transform:scale(0.94); } .ds-add:focus-visible { outline:2px solid #C0A06A; outline-offset:2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Market Board",
+    "overview": "The hub is the green A-frame chalkboard at the Rayana market stall. Every screen head is that board: deep green inside a brass frame, lettered in chalk. Below it, the work is paper notes pinned on a sack-cloth ground, each a little crooked, straightening under the hand. The board says what is on this week and names today's special, which is whatever needs Oran. The notes hold the detail.\n\nThe system is calm and dense enough for a phone held between market jobs. One text size runs through lists and rank comes from weight, the way a timetable works. Status is a printed mark in a fixed cell, not a coloured pill. Every post carries a short code you can quote in chat. Colour is scarce: green is the board and its furniture, cream is chalk and paper, brass draws the frames and rules, and oxblood appears only where something needs Oran.\n\nThe world deliberately turns away from the cream page with a serif title over a list of identical cards, which is what v1 and generic AI planners ship. The founder said v1 \"looks really AI\". The board, the chalk and the pinned notes exist to answer that.",
+    "keyCharacteristics": [
+      "A green chalkboard in a 3px brass frame heads every screen; chalk lettering lives on boards only.",
+      "Paper notes on a sack ground, tilted -1.4, 1.1 and -0.6 degrees in turn, that straighten on hover, press or focus.",
+      "Oxblood means \"needs Oran\" and nothing else.",
+      "Status is a 16px printed ring that fills as the post moves along.",
+      "Each post has a code made of ISO week, day and series (47-WED-BB).",
+      "Corners are 4px on controls and 6px on notes and sheets. The round add button is the only exception.",
+      "Light and dark modes. The board stays green in both."
+    ],
+    "rules": [
+      { "name": "The Needs-Oran Rule", "body": "Oxblood is reserved for what needs Oran: the add button, ready-for-you marks and notes, today's row, need counts. If nothing needs him, nothing on the screen is oxblood. Errors use danger or an oxblood toast, never decoration.", "section": "colors" },
+      { "name": "The Brass Is Line Rule", "body": "Brass draws frames, rules, markers and focus. It is never a fill or a background.", "section": "colors" },
+      { "name": "The Board Stays Green Rule", "body": "Board Green is the same in light and dark mode. Only the ground, paper and ink invert.", "section": "colors" },
+      { "name": "The Chalk Is Board Rule", "body": "Cabin Sketch is used only on a board: the screen-head board, feed cells and picture-less reference tiles, each of which is a small board. It never appears on paper.", "section": "typography" },
+      { "name": "The One Size Rule", "body": "Inside lists, title and metadata share one size (14px) and rank by weight (700 against 500), not by size.", "section": "typography" },
+      { "name": "The Pinned Note Rule", "body": "Notes rotate from the top centre by turns (-1.4deg, 1.1deg, -0.6deg) and straighten on hover, press or keyboard focus. The founder asked for this. With reduced motion they sit straight.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do head every screen with the green board in its 3px brass frame, and put the screen title on it in chalk.",
+      "Do keep oxblood for what needs Oran. A screen with nothing for him has no oxblood.",
+      "Do show status as the printed ring mark in its fixed cell beside the title.",
+      "Do give every post its code (week-DAY-SERIES) wherever the post appears.",
+      "Do pin notes with the rotating tilt and straighten them on hover, press and focus. Keep them straight under reduced motion.",
+      "Do use 4px corners on controls and 6px on notes, cards and sheets.",
+      "Do use Phosphor icons (regular, with fill or bold for active states).",
+      "Do check every new surface in dark mode. The board stays green there."
+    ],
+    "donts": [
+      "Don't put Cabin Sketch on paper. Chalk belongs on boards.",
+      "Don't use oxblood for decoration, emphasis or branding accents.",
+      "Don't fill surfaces with brass. Brass is line.",
+      "Don't rank list items by size. Keep one size and rank by weight.",
+      "Don't build screens as a cream page with a serif title over identical cards. That is the v1 look the founder rejected.",
+      "Don't add pill-shaped status badges or large radii. The round add button is the only round shape."
+    ]
+  }
+}
