@@ -511,6 +511,18 @@ span.lot-code { cursor: inherit; flex: none; align-self: flex-start; font-size: 
 /* ================= Post editor: cover and trial sheet ================= */
 .cover-pick { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; }
 .cover-pick .cell { width: 96px; cursor: default; border-radius: var(--r); }
+.slides { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 12px 10px; margin-bottom: 10px; }
+.slides[hidden] { display: none; }
+.slide { display: grid; gap: 6px; min-width: 0; }
+.slide .cell { cursor: default; border-radius: var(--r); }
+.slide-n { position: absolute; top: 6px; left: 6px; z-index: 1; min-width: 22px; height: 22px; padding: 0 6px; display: grid; place-items: center; background: var(--green); color: var(--on-green); border-radius: var(--r); font: 700 12px/1 var(--sans); font-variant-numeric: tabular-nums; }
+.slide-ctl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.slide-ctl button { min-height: 40px; display: grid; place-items: center; background: transparent; color: var(--ink); border: 1px solid var(--rule-strong); border-radius: var(--r); cursor: pointer; touch-action: manipulation; }
+.slide-ctl button .ph { font-size: 17px; }
+.slide-ctl button:active:not(:disabled) { transform: scale(0.95); }
+.slide-ctl button:disabled { opacity: 0.35; cursor: default; }
+.slide-ctl button:last-child { color: var(--danger); }
+.cell-count { position: absolute; top: 6px; right: 6px; z-index: 1; display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; background: var(--green); color: var(--on-green); border-radius: var(--r); font: 700 11.5px/1.2 var(--sans); }
 .trial-sheet { border: 1px solid var(--rule-strong); border-radius: var(--r-card); overflow: hidden; margin-bottom: 16px; }
 .trial-sheet table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
 .trial-sheet th, .trial-sheet td { padding: 6px 6px; border-top: 1px solid var(--rule); text-align: left; vertical-align: middle; }

@@ -1,7 +1,7 @@
 // Feed: how the Instagram grid will look, newest first, with the planned posts on top.
 // Posts without a cover show as a small chalkboard with the series on it.
-import { h, parseISO, DOW, MONTHS } from '../ui.js';
-import { openPostEditor } from './week.js';
+import { h, icon, parseISO, DOW, MONTHS } from '../ui.js';
+import { openPostEditor, postImages } from './week.js';
 
 const isFeedPost = (p) => (p.platforms || []).includes('instagram') && p.format !== 'story';
 const tag = (iso) => { const d = parseISO(iso); return `${DOW[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; };
@@ -11,7 +11,7 @@ export async function render(root, ctx) {
     .sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')));
   const planned = all.filter((p) => p.status !== 'posted');
   const posted = all.filter((p) => p.status === 'posted');
-  const withCover = all.filter((p) => p.cover).length;
+  const withCover = all.filter((p) => postImages(p).length).length;
 
   ctx.band(
     h('h1', { class: 'chalk-title' }, 'Feed'),
@@ -41,7 +41,9 @@ function cell(ctx, p, upcoming) {
     h('span', { class: 'cell-code' }, ctx.seriesName(p.series) || 'Post'),
     h('span', { class: 'cell-series' }, p.title || ''));
   el.append(tile);
-  if (p.cover) ctx.store.mediaURL(p.cover).then((u) => tile.replaceWith(h('img', { src: u, alt: '', loading: 'lazy' }))).catch(() => {});
+  const pics = postImages(p);
+  if (pics.length) ctx.store.mediaURL(pics[0]).then((u) => tile.replaceWith(h('img', { src: u, alt: '', loading: 'lazy' }))).catch(() => {});
+  if (pics.length > 1) el.append(h('span', { class: 'cell-count', title: `${pics.length} pictures` }, icon('carousel'), pics.length));
   if (upcoming) el.append(h('span', { class: 'cell-when' }, p.status === 'ready' ? `${tag(p.date)}, for you` : tag(p.date)));
   return el;
 }

@@ -27,7 +27,7 @@ const ICONS = {
   settings: 'gear-six', plus: 'plus', close: 'x', link: 'link-simple', image: 'image', video: 'video-camera',
   left: 'caret-left', right: 'caret-right', external: 'arrow-square-out', edit: 'pencil-simple', info: 'info',
   search: 'magnifying-glass', drive: 'google-drive-logo', refresh: 'arrows-clockwise', play: 'play', copy: 'copy',
-  next: 'arrow-right', idea: 'lightbulb', market: 'storefront', story: 'camera', post: 'clipboard-text',
+  next: 'arrow-right', idea: 'lightbulb', market: 'storefront', story: 'camera', post: 'clipboard-text', carousel: 'stack-simple',
 };
 export function icon(name, cls = '') {
   const i = document.createElement('i');

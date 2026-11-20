@@ -1,11 +1,20 @@
 // This Week: the week chalked on the board, then the posts pinned under it, day by day.
-// Also home to the post editor (cover picture and the A/B/C trial sheet).
+// Also home to the post editor (cover picture, carousel pictures and the A/B/C trial sheet).
 import {
   h, icon, mark, toast, openSheet, confirmSheet, field, chipPicker, select, statusName, postCode, copyText,
   PLATFORMS, POST_STATUSES, todayISO, addDays, mondayOf, parseISO, shortDate, DOW, MONTHS,
 } from '../ui.js';
 import { makeId } from '../store.js';
 import { compressImage, formatBytes } from '../image.js';
+
+/** Every picture a post has, in order. Carousels keep `images`; `cover` is always the first one. */
+export function postImages(p) {
+  if (Array.isArray(p.images) && p.images.length) return p.images;
+  return p.cover ? [p.cover] : [];
+}
+
+const MAX_SLIDES = 20;
+const rand4 = () => Math.random().toString(36).slice(2, 6);
 
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 const FULL_DAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -250,7 +259,7 @@ export function openPostEditor(ctx, post, defaults = {}, onSaved) {
   const coverCell = h('div', { class: 'cell' }, h('div', { class: 'cell-tile' }, h('span', { class: 'cell-series' }, 'No cover yet')));
   if (p.cover) ctx.store.mediaURL(p.cover).then((u) => coverCell.replaceChildren(h('img', { src: u, alt: 'Cover' }))).catch(() => {});
   const coverInput = h('input', { type: 'file', accept: 'image/*', disabled: ro });
-  const coverInfo = h('p', { class: 'hint' }, 'The first frame or carousel cover. It shows in the Feed preview.');
+  const coverInfo = h('p', { class: 'hint' }, 'The first frame. It shows in the Feed preview.');
   coverInput.addEventListener('change', async () => {
     const f = coverInput.files && coverInput.files[0];
     if (!f) return;
@@ -261,6 +270,47 @@ export function openPostEditor(ctx, post, defaults = {}, onSaved) {
       coverInfo.textContent = `Ready: ${formatBytes(coverPick.blob.size)}. Saved with the post.`;
     } catch (err) { coverPick = null; coverInfo.textContent = err.message; }
   });
+
+  // Slides (carousels): an ordered list of pictures. The first one is the cover in the Feed.
+  const origImages = postImages(p);                 // paths already in the data repo
+  let slides = origImages.map((path) => ({ path })); // { path } saved, or { blob, url } waiting to upload
+  const slideList = h('div', { class: 'slides' });
+  const slideInfo = h('p', { class: 'hint' });
+  const slideInput = h('input', { type: 'file', accept: 'image/*', multiple: true, disabled: ro });
+  const drawSlides = () => {
+    slideInfo.textContent = slides.length
+      ? `${slides.length} ${slides.length === 1 ? 'picture' : 'pictures'}, in carousel order. The first is the cover.${slides.some((s) => !s.path) ? ' New ones upload when you save.' : ''}`
+      : 'Add the pictures in the order of the carousel. The first is the cover.';
+    slideList.hidden = !slides.length;
+    slideList.replaceChildren(...slides.map((s, i) => {
+      const cell = h('div', { class: 'cell' }, h('span', { class: 'slide-n' }, i + 1));
+      if (s.url) cell.prepend(h('img', { src: s.url, alt: `Picture ${i + 1}` }));
+      else {
+        cell.prepend(h('div', { class: 'cell-tile' }));
+        ctx.store.mediaURL(s.path).then((u) => cell.querySelector('.cell-tile')?.replaceWith(h('img', { src: u, alt: `Picture ${i + 1}` }))).catch(() => {});
+      }
+      const move = (by) => { const j = i + by; [slides[i], slides[j]] = [slides[j], slides[i]]; drawSlides(); };
+      const ctl = ro ? null : h('div', { class: 'slide-ctl' },
+        h('button', { type: 'button', 'aria-label': `Move picture ${i + 1} earlier`, disabled: i === 0, onclick: () => move(-1) }, icon('left')),
+        h('button', { type: 'button', 'aria-label': `Move picture ${i + 1} later`, disabled: i === slides.length - 1, onclick: () => move(1) }, icon('right')),
+        h('button', { type: 'button', 'aria-label': `Remove picture ${i + 1}`, onclick: () => { const [gone] = slides.splice(i, 1); if (gone.url) URL.revokeObjectURL(gone.url); drawSlides(); } }, icon('close')));
+      return h('div', { class: 'slide' }, cell, ctl);
+    }));
+  };
+  slideInput.addEventListener('change', async () => {
+    const files = [...(slideInput.files || [])].slice(0, Math.max(0, MAX_SLIDES - slides.length));
+    slideInput.value = '';
+    if (!files.length) { slideInfo.textContent = `A carousel holds up to ${MAX_SLIDES} pictures.`; return; }
+    for (const [n, f] of files.entries()) {
+      slideInfo.textContent = `Shrinking picture ${n + 1} of ${files.length} (${formatBytes(f.size)})...`;
+      try {
+        const pic = await compressImage(f, { maxEdge: 1440, targetBytes: 900 * 1024 });
+        slides.push({ blob: pic.blob, url: URL.createObjectURL(pic.blob) });
+      } catch (err) { slideInfo.textContent = err.message; return; }
+    }
+    drawSlides();
+  });
+  drawSlides();
 
   // Trial sheet (videos)
   const t = p.trial ? JSON.parse(JSON.stringify(p.trial)) : { variants: { A: {}, B: {}, C: {} }, winner: '' };
@@ -295,7 +345,16 @@ export function openPostEditor(ctx, post, defaults = {}, onSaved) {
     h('p', { class: 'hint' }, 'Judge on the 3-second hold first, then watch time, shares and saves. Only the winner goes to the feed, after your yes in chat.'));
   winner.el.addEventListener('change', drawLead);
   drawLead();
-  const showTrial = () => { trialBlock.hidden = format.value() !== 'video'; };
+  const coverField = h('div', { class: 'field' }, h('label', { for: coverInput.id = 'cv' + rand4() }, 'Cover'),
+    h('div', { class: 'cover-pick' }, coverCell, h('div', { style: 'display:grid;gap:6px;min-width:0' }, coverInput, coverInfo)));
+  const slidesField = h('div', { class: 'field' }, h('label', { for: slideInput.id = 'sl' + rand4() }, 'Carousel pictures'),
+    slideList, h('div', { style: 'display:grid;gap:6px' }, slideInput, slideInfo));
+  const showTrial = () => {
+    const f = format.value();
+    trialBlock.hidden = f !== 'video';
+    slidesField.hidden = f !== 'carousel';
+    coverField.hidden = f === 'carousel';
+  };
   format.el.addEventListener('change', showTrial); showTrial();
 
   const body = h('div', {},
@@ -305,8 +364,8 @@ export function openPostEditor(ctx, post, defaults = {}, onSaved) {
     h('div', { class: 'field' }, h('span', { class: 'label' }, 'Format'), format.el),
     h('div', { class: 'field' }, h('span', { class: 'label' }, 'Platforms'), plats.el),
     h('div', { class: 'field' }, h('label', { for: status.id = 'st' + Math.random().toString(36).slice(2, 6) }, 'Status'), status, statusHint),
-    h('div', { class: 'field' }, h('label', { for: coverInput.id = 'cv' + Math.random().toString(36).slice(2, 6) }, 'Cover'),
-      h('div', { class: 'cover-pick' }, coverCell, h('div', { style: 'display:grid;gap:6px;min-width:0' }, coverInput, coverInfo))),
+    coverField,
+    slidesField,
     trialBlock,
     field('Video or files in Google Drive', drive),
     field('Caption', caption),
@@ -338,13 +397,30 @@ export function openPostEditor(ctx, post, defaults = {}, onSaved) {
       if (filled || winner.value()) next.trial = { ...t, winner: winner.value(), judged: winner.value() ? (t.judged || todayISO()) : '' };
     }
     save.disabled = true;
+    let removed = [];
     try {
-      if (coverPick) {
+      if (next.format === 'carousel') {
+        // Pictures keep their own file names, so reordering never re-uploads. New ones are named after the post.
+        const fresh = slides.filter((s) => !s.path).length;
+        let done = 0;
+        for (const s of slides) {
+          if (s.path) continue;
+          save.textContent = `Uploading picture ${++done} of ${fresh}...`;
+          const path = `media/covers/${next.id}-${rand4()}.jpg`;
+          await ctx.store.uploadBlob(path, s.blob, `Picture for post ${next.date}: ${next.title || 'untitled'}`);
+          s.path = path; // kept, so a retry after an error does not upload it twice
+        }
+        const paths = slides.map((s) => s.path);
+        removed = origImages.filter((x) => !paths.includes(x));
+        if (paths.length) { next.images = paths; next.cover = paths[0]; }
+        else if (origImages.length) { delete next.images; delete next.cover; }
+      } else if (coverPick) {
         save.textContent = 'Uploading cover...';
         next.cover = `media/covers/${next.id}.jpg`;
         await ctx.store.uploadBlob(next.cover, coverPick.blob, `Cover for post ${next.date}: ${next.title || 'untitled'}`);
       }
       const saved = await ctx.store.saveItem('posts', next, `${editing ? 'Update' : 'Plan'} post ${next.date}: ${next.title || ctx.seriesName(next.series) || 'untitled'}`);
+      for (const path of removed) await ctx.store.deleteFile(path, `Remove picture from post ${next.id}`).catch(() => {});
       sheet.close();
       toast(editing ? 'Post saved.' : 'Post added.');
       if (onSaved) onSaved(saved);
@@ -356,7 +432,9 @@ export function openPostEditor(ctx, post, defaults = {}, onSaved) {
     if (!ok) return;
     try {
       await ctx.store.deleteItem('posts', post, `Delete post ${post.date}: ${post.title || 'untitled'}`);
-      if (post.cover) await ctx.store.deleteFile(post.cover, `Delete cover for post ${post.id}`).catch(() => {});
+      for (const path of new Set([post.cover, ...(post.images || [])].filter(Boolean))) {
+        await ctx.store.deleteFile(path, `Delete picture for post ${post.id}`).catch(() => {});
+      }
       sheet.close(); toast('Post deleted.'); ctx.refresh();
     } catch { /* the sync line explains */ }
   });
